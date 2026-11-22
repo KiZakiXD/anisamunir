@@ -1,4 +1,4 @@
-# Anisa — Navy Ice
+# Template Undangan Digital — Anisa Navy Ice
 
 Template undangan pernikahan digital satu halaman (statis, tanpa backend) bertema **navy & putih es**: tirai cover yang terbelah saat dibuka, hero layar penuh, ayat pembuka, bingkai mempelai menyatu/pisah, kisah, kalender + hitung mundur, kartu akad & resepsi, peta + QR lokasi, galeri, amplop digital (DANA), doa restu, dan RSVP ucapan.
 
