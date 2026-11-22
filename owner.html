@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B1B1F">
+<meta name="robots" content="noindex,nofollow">
+<title>Owner — Alya & Rangga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sage-800:#1B1B1F;--sage-900:#101013;--sage:#8C6D2F;--sage-soft:#E9E2CC;--ivory:#F7F2E5;--gold:#B9975B;--ink:#2B3328;--ink-soft:#55503F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#20281F;color:var(--ink)}
+.wrap{max-width:520px;margin:0 auto;background:var(--ivory);min-height:100dvh;padding:28px 20px 60px}
+h1{font-family:'Playfair Display',serif;font-size:27px;color:var(--sage-900);text-align:center}
+.sub{text-align:center;font-size:13px;color:var(--ink-soft);margin:8px 0 22px;line-height:1.6}
+label{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin:18px 0 8px}
+textarea,input,select{width:100%;border:1.5px solid #D9CFB2;border-radius:14px;padding:13px 14px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+textarea{line-height:1.65;resize:vertical}
+.hint{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:14px 22px;border-radius:999px;border:0;cursor:pointer;text-decoration:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#A5854A);color:#fff;width:100%;margin-top:16px}
+.btn-wa{background:#25D366;color:#fff;padding:10px 16px;font-size:11px}
+.btn-copy{background:var(--sage-soft);color:var(--sage-800);padding:10px 16px;font-size:11px}
+.btn-short{background:#fff;border:1.5px solid var(--sage);color:var(--sage-800);padding:10px 16px;font-size:11px}
+.card{background:#fff;border:1px solid #E7DFC9;border-radius:18px;padding:16px;margin-top:12px;box-shadow:0 10px 24px -16px rgba(47,59,44,.3)}
+.card h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--sage-900)}
+.link{font-size:11.5px;color:var(--ink-soft);word-break:break-all;background:var(--ivory);border-radius:10px;padding:9px 11px;margin:9px 0 4px;line-height:1.55}
+.link b{color:var(--sage-800)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.count{text-align:center;font-weight:700;color:var(--sage-800);margin-top:20px;font-size:14px}
+.gate{max-width:340px;margin:16vh auto 0;text-align:center}
+.gate p{font-size:13.5px;color:var(--ink-soft);margin:10px 0 16px;line-height:1.6}
+.err{color:#B3261E;font-size:13px;min-height:18px;margin-top:10px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,16px);background:var(--sage-900);color:#fff;font-size:13px;padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.3s;z-index:9;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- PIN -->
+  <div id="gate" class="gate">
+    <h1>Area Owner</h1>
+    <p>Halaman khusus pengantin / pengirim undangan.<br>Masukkan kode akses untuk melanjutkan.</p>
+    <input type="password" id="pin" placeholder="Kode akses" autocomplete="off" style="text-align:center">
+    <p class="err" id="pinErr"></p>
+    <button class="btn btn-gold" id="pinBtn" type="button">Masuk</button>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel" hidden>
+    <h1>Kirim Undangan</h1>
+    <p class="sub">Alya & Rangga · Sabtu, 18 September 2027<br>Isi nama tamu, link personal + short link otomatis jadi per orang.</p>
+
+    <label for="names">Daftar Nama Tamu</label>
+    <textarea id="names" rows="8" placeholder="Satu nama per baris. Contoh:&#10;Keluarga Besar Haji Ahmad&#10;Bapak Andi & Keluarga&#10;Mbak Rina | 081234567890"></textarea>
+    <p class="hint">Tambahkan nomor WA setelah tanda <b>|</b> kalau mau tombol kirimnya langsung ke nomor orangnya. Tanpa nomor juga bisa — nanti tinggal pilih kontak di WhatsApp. Daftar ini tersimpan otomatis di HP ini.</p>
+
+    <label for="template">Template Pesan WhatsApp</label>
+    <textarea id="template" rows="7"></textarea>
+    <p class="hint">Pakai <b>{nama}</b> untuk nama tamu dan <b>{short}</b> untuk link undangan (sudah versi pendek). <b>{link}</b> = link panjang, cadangan saja.</p>
+
+    <label for="layoutSel">Tata Letak Foto Mempelai</label>
+    <select id="layoutSel">
+      <option value="menyatu">Menyatu — satu bingkai foto berdua</option>
+      <option value="pisah">Pisah — dua bingkai, foto sendiri-sendiri</option>
+    </select>
+    <label for="fotoSel">Foto Berdua (untuk layout Menyatu)</label>
+    <select id="fotoSel">
+      <option value="g9">Foto Utama (g9)</option>
+      <option value="g3">Foto Berdua 2 (g3)</option>
+      <option value="couple">Foto Couple (couple)</option>
+      <option value="cover">Foto Cover (cover)</option>
+      <option value="g4">Foto Berdua 3 (g4)</option>
+      <option value="g8">Foto Berdua 4 (g8)</option>
+    </select>
+    <p class="hint">Pilihan ini ikut terbawa di link tiap tamu — tamu yang membuka link akan melihat tata letak &amp; foto sesuai pilihan ini.</p>
+
+    <button class="btn btn-gold" id="genBtn" type="button">Buat Link Semua Tamu</button>
+    <p class="count" id="count"></p>
+    <div class="row" id="bulkRow" hidden>
+      <button class="btn btn-copy" id="copyAll" type="button">Salin Semua Link</button>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PIN="admin123";
+const BASE=location.href.split(/[?#]/)[0].replace(/[^/]*$/,"");
+const SHORT=BASE;
+const $=s=>document.querySelector(s);
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2000);}
+async function copyText(v,msg){try{await navigator.clipboard.writeText(v);toast(msg||"Tersalin");}catch{toast(v);}}
+/* PIN */
+function unlock(){$("#gate").hidden=true;$("#panel").hidden=false;}
+if(sessionStorage.getItem("owner-ok")==="1")unlock();
+function tryPin(){if($("#pin").value.trim()===PIN){sessionStorage.setItem("owner-ok","1");unlock();}else{$("#pinErr").textContent="Kode salah, coba lagi.";}}
+$("#pinBtn").addEventListener("click",tryPin);
+$("#pin").addEventListener("keydown",e=>{if(e.key==="Enter")tryPin();});
+/* Template default */
+const DEF=`Assalamu'alaikum Warahmatullahi Wabarakatuh
+
+Kepada Yth. {nama}
+
+Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:
+
+Alya Maharani & Rangga Aditya
+Sabtu, 18 September 2027
+Gedung Serbaguna Graha Nusantara, Jl. Merdeka Raya No. 88, Jakarta Selatan
+
+Detail undangan: {short}
+
+Merupakan suatu kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu. Terima kasih.
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh`;
+(function(){let t=localStorage.getItem("owner-template");if(t&&t.includes("Short link:")){t=t.replace("Detail undangan: {link}","Detail undangan: {short}").replace(/\nShort link: \{short\}/g,"");localStorage.setItem("owner-template",t);}$("#template").value=t||DEF;})();
+/* Restore nama */
+$("#names").value=localStorage.getItem("owner-names")||"";
+$("#names").addEventListener("input",e=>localStorage.setItem("owner-names",e.target.value));
+$("#template").addEventListener("input",e=>localStorage.setItem("owner-template",e.target.value));
+
+const slugify=n=>n.toLowerCase().replace(/&/g,"dan").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let lastLinks=[];
+function generate(){
+  const lines=$("#names").value.split("\n").map(x=>x.trim()).filter(Boolean);
+  const tpl=$("#template").value;
+  const list=$("#list");list.innerHTML="";lastLinks=[];
+  if(!lines.length){$("#count").textContent="";$("#bulkRow").hidden=true;toast("Isi dulu nama tamunya");return;}
+  lines.forEach(line=>{
+    const [rawName,rawPhone]=line.split("|").map(x=>(x||"").trim());
+    const name=rawName;if(!name)return;
+    let phone=rawPhone.replace(/[^0-9]/g,"");if(phone.startsWith("0"))phone="62"+phone.slice(1);
+    const lay=$("#layoutSel").value, fto=$("#fotoSel").value;
+    let suffix="";if(lay==="pisah")suffix+="&layout=pisah";if(fto!=="g9")suffix+="&foto="+fto;
+    const link=BASE+"?to="+encodeURIComponent(name).replace(/%20/g,"+")+suffix;
+    const short=SHORT+"?to="+slugify(name)+suffix;
+    lastLinks.push(`${name}: ${short}`);
+    const msg=tpl.replaceAll("{nama}",name).replaceAll("{link}",link).replaceAll("{short}",short);
+    const wa=phone?`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`;
+    const card=document.createElement("div");card.className="card";
+    card.innerHTML=`<h3>${esc(name)}</h3>
+      <p class="link">Personal: <b>${esc(link)}</b></p>
+      <p class="link">Short: <b>${esc(short)}</b></p>
+      <div class="row">
+        <a class="btn btn-wa" target="_blank" rel="noopener" href="${wa}">Kirim via WA</a>
+        <button class="btn btn-copy" type="button" data-copy="${esc(short)}">Salin Short Link</button>
+        <button class="btn btn-short" type="button" data-copy="${esc(link)}">Salin Link Panjang</button>
+      </div>`;
+    list.appendChild(card);
+  });
+  $("#count").textContent=lastLinks.length+" tamu siap dikirim";
+  $("#bulkRow").hidden=false;
+  list.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>copyText(b.dataset.copy,"Link tersalin")));
+}
+$("#layoutSel").value=localStorage.getItem("owner-layout")||"menyatu";
+$("#fotoSel").value=localStorage.getItem("owner-foto")||"g9";
+$("#layoutSel").addEventListener("change",e=>{localStorage.setItem("owner-layout",e.target.value);if($("#names").value.trim())generate();});
+$("#fotoSel").addEventListener("change",e=>{localStorage.setItem("owner-foto",e.target.value);if($("#names").value.trim())generate();});
+$("#genBtn").addEventListener("click",generate);
+$("#copyAll").addEventListener("click",()=>copyText(lastLinks.join("\n"),"Semua link tersalin"));
+if($("#names").value.trim())generate();
+</script>
+</body>
+</html>
